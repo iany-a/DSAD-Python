@@ -1,0 +1,51 @@
+Pandas
+
+serie - one dimensional array
+Row 0 - val 0
+row 1 - val 1
+...
+...
+
+#constructor for Series
+class pandas.Series(data=None, index=None, dtype=None, name=None, copy=False)
+
+data = type of structure of dict, numpy.ndarray or pandas.DataFrame
+index = row names
+dtype = str, numpy.dtype or ExtensionDtype #optional field, None = inferred
+name = str, #optional field, name given to the Series
+copy = indicates copying of input data
+
+import pandas as pd
+from pandas import Series
+serie_1 = pd.Series(('a', 'b', 'c'))
+
+#constructor for DataFrame
+class pandas.DataFrame(data=None, index=None, columns=None, dtype=None, copy=False)
+
+data – is a type structure of dict, numpy.ndarray or pandas.DataFrame
+index – row names
+columns – column names
+dtype – str, numpy.dtype, sau ExtensionDtype; optional, None - inferred
+copy – indicates copying of input data; the parameter applies only to two-dimensional
+numpy.ndarray
+
+from what type of data we can create a DataFrame?
+-2d ndarray (matrix)
+-dictionary (of series, of a dictionary)
+-list (list of lists or list of tuples treated as 2d ndarray case
+-another DataFrame
+
+#data selection in pandas:
+frame_name [['column1', ...., 'columnK']]
+
+#modify/delete columns
+frame_name ['column_name] = value
+del frame_name ['column_name']
+
+#insert a column:
+DataFrame.insert(loc, column, value, allow_duplicates = False)
+
+#select > drop
+
+
+
