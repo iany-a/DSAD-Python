@@ -10,5 +10,10 @@ g.correlogram(R2=corr)
 
 corr_df= pd.DataFrame(data=corr, index=('V'+str(i+1) for i in range(corr.shape[0])),
                       columns=('V'+str(j+1) for j in range (corr.shape[1])))
-g.correlogram(R2=corr_df,dec=1,title='Correlogram from a pandas dataframe')
+#g.correlogram(R2=corr_df,dec=1,title='Correlogram from a pandas dataframe')
+#g.show()
+
+
+#call in the correlation circle
+g.correlation_circle(corr)
 g.show()
