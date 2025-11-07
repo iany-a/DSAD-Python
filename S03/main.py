@@ -108,7 +108,7 @@ print(df_1, type(df_1))
 
 #create a pandas DataFrame from a numpy array (np.ndarray)
 #create a 2D ndarray of (4, 6) with randomly generated integers in [1,10]
-nda_2 = np.random.randint(low=1, high=10, size=(4,6)) #size can be an int or a tuple
+nda_2 = np.random.randint(low=1, high=10, size=(4,6)) #size can be an int or a tuple, tuple shows the number of rows and columns
 print(nda_2, type(nda_2))
 
 df_2 = pd.DataFrame(data=nda_2)
