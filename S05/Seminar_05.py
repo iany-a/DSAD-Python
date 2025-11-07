@@ -15,5 +15,6 @@ corr_df= pd.DataFrame(data=corr, index=('V'+str(i+1) for i in range(corr.shape[0
 
 
 #call in the correlation circle
-g.correlation_circle(corr)
+#g.correlation_circle(R2=corr)
+g.correlation_circle('what')
 g.show()
