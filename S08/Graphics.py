@@ -19,6 +19,13 @@ def correlogram(R2=None, dec=2, title='Correlogram',
               color='Blue')
     sb.heatmap(data=np.round(a=R2, decimals=dec), vmin=valMin, vmax=valMax,
                cmap='bwr', annot=True)
+def link_intensity(matrix=None, dec=2, title='Link Intensity', color='Oranges'):
+    plt.figure(num=title, figsize=(11, 8))
+    plt.title(label=title, fontsize=12,
+              verticalalignment='bottom',
+              color='Blue')
+    sb.heatmap(data=np.round(a=matrix, decimals=dec),
+               cmap=color, annot=True)
 
 
 def correlation_circle(R2=None, V1=0, V2=1,

@@ -18,12 +18,23 @@ class PCA:
         print(eigenvectors.shape)
         print(eigenvalues.shape)
         #sort the eigenvalues and the corresponding eigenvectors in descending order
-        k_desc = [k for k in np.argsort(a=eigenvalues)]
+        k_desc = np.argsort(eigenvalues)[::-1]
+        #k_desc = [k for k in np.argsort(a=eigenvalues)]
         print(k_desc)
         self.alpha = eigenvalues[k_desc]
         self.a = eigenvectors[:, k_desc]
 
         #compute the principal components
+        self.C = self.x_sts @ self.a
 
+
+    def getAlpha(self):
+        return self.alpha
+
+    def getComponents(self):
+        return self.C
+
+    def getScores(self):
+        return self.C / np.sqrt(self.alpha)
 
 
