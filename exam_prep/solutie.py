@@ -5,11 +5,11 @@ from matplotlib import pyplot as plt
 
 #index_col = 0 takes first column SIRUTA code, merge on index
 ind_df = pd.read_csv('./dataIN/Industrie.csv', index_col=0)
-print(ind_df.head())
+#print(ind_df.head())
 
 pop_df = pd.read_csv('./dataIN/PopulatieLocalitati.csv', index_col=0)
 
-print (pop_df)
+#print (pop_df.head())
 
 
 
@@ -17,13 +17,12 @@ print (pop_df)
 #split value from each row on the no of inhabitants
 #merge the tables and select the columns we need and the divide by inhabitants
 merge_df = ind_df.merge(right=pop_df, left_index=True, right_index=True)
-print(merge_df)
+#print(merge_df)
 
 #create list of columns with industries
 #[1:] as we select all columns from Industries file
 industry_list = ind_df.columns[1:].values.tolist()
-print(industry_list, type(industry_list))
-
+#print(industry_list, type(industry_list))
 
 def perCapita(df, vars, pop):
     row = df[vars] / df[pop]
@@ -34,7 +33,6 @@ def perCapita(df, vars, pop):
 
 #result_df = merge_df[['Localitate_x', 'Populatie'] + industry_list].apply(func=perCapita, axis=1, vars = industry_list, pop= 'Populatie')]
 rezultat_df = merge_df[ [ 'Localitate_x' , 'Populatie' ] + industry_list].apply(func=perCapita, axis=1, vars=industry_list, pop='Populatie')
-
 #siruta needs to be a column in the exported file!!!
 
 rezultat_df.to_csv('./dataOUT/Cerinta1.csv')
@@ -45,20 +43,30 @@ df_1 = merge_df[industry_list + ['Judet']].groupby(by='Judet').sum()
 
 def dominantIndustry(df): #only a dataframe as input
     row = df.values
-    print(row)
+    #print(row)
     maxCA = np.argmax(row) #this gives us the index of max value from that row
     return pd.Series(data=[df.index[maxCA], row[maxCA]], index = ['Industria dominanta', 'Cifra de afaceri'])
 
 
 
 df_2 = df_1[industry_list].apply(func=dominantIndustry, axis=1)
-print(df_2)
+#print(df_2)
 df_2.to_csv('./dataOUT/Cerinta2.csv', index_label = 'County')
 
 #cerinta_3
 #split the dataset in 2 and save in 2 csv files
 tabel = pd.read_csv('./dataIN/DataSet_34.csv', index_col=0)
-print(tabel)
+#print(tabel)
+
+#z_score = lambda df: (df- df.mean() / df.std(ddof=0))
+def quick_std(df):
+    return df.sub(df.mean()).div(df.std(ddof=0))
+
+Xstd_df_quick = quick_std(tabel.iloc[:, :4])
+Ystd_df_quick = quick_std(tabel.iloc[:, 4:])
+
+Xstd_df_quick.to_csv('./dataOUT/Xscores.csv', index_label = 'Country')
+Ystd_df_quick.to_csv('./dataOUT/Yscores.csv', index_label = 'Country')
 
 def standardize(A):
     #expects a numpy.ndarray
@@ -83,18 +91,18 @@ Ystd_df = pd.DataFrame(data=Ystd, index=tabel.index.values, columns = y_col)
 Ystd_df.to_csv('./dataOUT/Ystd.csv', index_label = 'Country')
 
 #cerinta_4
-n, p = Xstd.shape
-print(n,p)
+n, p = Xstd_df_quick.shape
+#print(n,p)
 #skl.CCA = skl.CCA(n_components=2)
-q = Ystd.shape[1] #this returns the number of columns, only for Y used
-print(q)
+q = Ystd_df_quick.shape[1] #this returns the number of columns, only for Y used
+#print(q)
 # Extract the observation names (indices) from the original table
 obs = tabel.index.values
 #no of canonical pairs
 m = min(p,q)
 object_CCA = skl.CCA(n_components=m)
-object_CCA.fit(X=Xstd, y=Ystd) #pay attention to X and y lettering
-z, u = object_CCA.transform(X=Xstd, y=Ystd)
+object_CCA.fit(X=Xstd_df_quick, y=Ystd_df_quick) #pay attention to X and y lettering
+z, u = object_CCA.transform(X=Xstd_df_quick, y=Ystd_df_quick)
 # print (z)
 # print (u)
 
@@ -107,12 +115,12 @@ u_df.to_csv('./dataOUT/Yscores.csv', index_label = 'Country')
 #cerinta 5
 #4x4 matrix
 Rxz = object_CCA.x_loadings_
-print(Rxz)
+#print(Rxz)
 Rxz_df = pd.DataFrame(data=Rxz, index=x_col, columns = ('z'+str(j+1) for j in range (m)))
 Rxz_df.to_csv('./dataOUT/Rxz.csv')
 
 Ryu = object_CCA.y_loadings_
-print(Ryu)
+#print(Ryu)
 Ryu_df = pd.DataFrame(data=Ryu, index=y_col, columns = ('y'+str(j+1) for j in range (m)))
 Ryu_df.to_csv('./dataOUT/Ryu.csv')
 
