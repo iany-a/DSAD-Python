@@ -28,9 +28,9 @@ df.drop('Blood Pressure', axis=1, inplace=True)
 # Mapping categories to numbers based on logical order
 bmi_mapping = {
     'Underweight' : 0,
-    'Normal': 1, 
-    'Normal Weight': 1, 
-    'Overweight': 2, 
+    'Normal': 1,
+    'Normal Weight': 1,
+    'Overweight': 2,
     'Obese': 3
 }
 df['BMI Category'] = df['BMI Category'].map(bmi_mapping)
@@ -102,7 +102,6 @@ g.dendrogram(h=h_2, labels=vars,
     title="Hierarchical classification - method='median', metric='correlation'",
     threshold=threshold, colors=None)
 
-
 # 1. Generate cluster assignments
 # 'threshold' is around 52.1294 based on ward plot
 clusters = fcluster(h_1, 52.1294, criterion='distance')
@@ -118,6 +117,9 @@ cluster_profile = df.groupby('Cluster').agg({
 }).round(2)
 
 print(cluster_profile)
+
+
+aaaa
 
 #PCA
 #This class implements PCA using the covariance matrix and eigen decomposition
